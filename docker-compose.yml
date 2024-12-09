@@ -1,0 +1,22 @@
+services:
+  jenkins:
+    container_name: jenkins
+    image: jenkins/jenkins:lts-jdk17
+    ports:
+      - "8080:8080"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+  ssh-agent:
+    container_name: agent
+    image: jenkins/ssh-agent
+
+  nginx:
+      container_name: nginx
+      image: nginx
+      ports:
+        - "180:80"
+      volumes:
+        - ./html/:/usr/share/nginx/html
+  
+volumes:
+  jenkins_home:
