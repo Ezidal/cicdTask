@@ -47,8 +47,8 @@ encrypt:
 	docker cp ./Monitoring/.env ansible:/data/.env1
 	docker cp ./DockerComposeTask/.env ansible:/data/.env2
 	docker cp ./.key ansible:/data/.key
-	docker exec -it ansible sh -c "ansible-vault encrypt .env1 --vault-password-file .key"
-	docker exec -it ansible sh -c "ansible-vault encrypt .env2 --vault-password-file .key"
+	docker exec ansible sh -c "ansible-vault encrypt .env1 --vault-password-file .key"
+	docker exec ansible sh -c "ansible-vault encrypt .env2 --vault-password-file .key"
 	docker cp ansible:/data/.env1 ./Monitoring/.env-crypt
 	docker cp ansible:/data/.env2 ./DockerComposeTask/.env-crypt
 	rm ./Monitoring/.env
@@ -60,10 +60,21 @@ decrypt:
 	docker cp ./Monitoring/.env-crypt ansible:/data/.env1
 	docker cp ./DockerComposeTask/.env-crypt ansible:/data/.env2
 	docker cp ./.key ansible:/data/.key
-	docker exec -it ansible sh -c "ansible-vault decrypt .env1 --vault-password-file .key"
-	docker exec -it ansible sh -c "ansible-vault decrypt .env2 --vault-password-file .key"
+	docker exec ansible sh -c "ansible-vault decrypt .env1 --vault-password-file .key"
+	docker exec ansible sh -c "ansible-vault decrypt .env2 --vault-password-file .key"
 	docker cp ansible:/data/.env1 ./Monitoring/.env
 	docker cp ansible:/data/.env2 ./DockerComposeTask/.env
 	rm ./Monitoring/.env-crypt
 	rm ./DockerComposeTask/.env-crypt
 	docker kill ansible
+
+u:
+	docker compose up -d
+
+d:
+	docker compose down
+
+r:
+	make d 
+	make u
+
